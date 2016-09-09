@@ -67,7 +67,7 @@ module Cursory
           let(:results) { double }
 
           before do
-            allow(results).to receive(:[]).with(0).and_return(result)
+            allow(results).to receive(:[]).with(9).and_return(result)
           end
 
           it "provides a 'next' cursor for 'limit' or more results" do
@@ -112,7 +112,7 @@ module Cursory
             let(:params) { { sort: 'name,-age,-created_at', cursor: encode_json(id: id) } }
 
             before do
-              allow(results).to receive(:[]).with(0).and_return(result)
+              allow(results).to receive(:[]).with(9).and_return(result)
             end
 
             it "specifies a 'where' clause with a cursor" do
