@@ -6,6 +6,7 @@ module Cursory
     attr_accessor *%i{criteria sort limit offset cursor}
 
     MAX_LIMIT = 100
+    DEFAULT_LIMIT = 10
     SORT_KEY, LIMIT_KEY, CURSOR_KEY, OFFSET_KEY = %i{sort limit cursor offset}
 
     def initialize criteria, params
@@ -95,7 +96,7 @@ module Cursory
     end
 
     def clamped_limit
-      [1, limit.to_i, MAX_LIMIT].sort[1]
+      [1, (limit || DEFAULT_LIMIT).to_i, MAX_LIMIT].sort[1]
     end
 
     def cursor_clauses
