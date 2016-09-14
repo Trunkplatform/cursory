@@ -142,7 +142,7 @@ module Cursory
     def parsed_cursor
       JSON.parse(::Base64.urlsafe_decode64(cursor || 'e30='))
     rescue ArgumentError, JSON::ParserError
-      raise InvalidCursorError
+      fail InvalidCursorError
     end
 
     def cursor_id
@@ -152,7 +152,7 @@ module Cursory
     def cursor_data(overrides={})
       (parsed_cursor || {}).merge(overrides)
     end
-
-    class InvalidCursorError < StandardError; end
   end
+
+  class InvalidCursorError < StandardError; end
 end
