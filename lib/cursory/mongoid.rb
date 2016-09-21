@@ -4,7 +4,7 @@ module Cursory
   class Mongoid < Base
     def search_type
       if cursor
-        [:where, cursor_clauses]
+        [:and, cursor_clauses]
       else
         [:skip, clamped_offset]
       end

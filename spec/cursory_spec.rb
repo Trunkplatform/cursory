@@ -21,7 +21,7 @@ module Cursory
       allow(model).to    receive(:find).with(id).and_return(result)
       allow(criteria).to receive(:order_by).and_return(criteria)
       allow(criteria).to receive(:limit).and_return(criteria)
-      allow(criteria).to receive(:where).and_return(criteria)
+      allow(criteria).to receive(:and).and_return(criteria)
       allow(criteria).to receive(:skip).and_return(criteria)
       allow(criteria).to receive(:to_a).and_return(results)
       allow(criteria).to receive(:count)
@@ -64,8 +64,8 @@ module Cursory
 
       describe 'cursors' do
         context "with no sort info" do
-          it "doesn't bother with a 'where' clause by default" do
-            expect(criteria).not_to receive(:where)
+          it "doesn't bother with a 'and' clause by default" do
+            expect(criteria).not_to receive(:and)
           end
 
           it "doesn't provide a 'next' cursor for less than 'limit' results" do
@@ -85,8 +85,8 @@ module Cursory
 
             context "on a request for the 'next' results" do
               let(:params) { { cursor: encode_json(id: id) } }
-              it "specifies a basic 'where' clause for the second page" do
-                expect(criteria).to receive(:where).with( "$or" => [ {:id => {"$gt"=>"outrageous-offset"}} ] )
+              it "specifies a basic 'and' clause for the second page" do
+                expect(criteria).to receive(:and).with( "$or" => [ {:id => {"$gt"=>"outrageous-offset"}} ] )
               end
             end
           end
@@ -95,8 +95,8 @@ module Cursory
         context "with sort info" do
           let(:params) { {sort: 'name'} }
 
-          it "doesn't bother with a 'where' clause by default" do
-            expect(criteria).not_to receive(:where)
+          it "doesn't bother with a 'and' clause by default" do
+            expect(criteria).not_to receive(:and)
           end
 
           context 'with a cursor' do
@@ -110,8 +110,8 @@ module Cursory
               allow(model).to receive(:find).with(id).and_return(result)
             end
 
-            it "specifies a 'where' clause with a cursor" do
-              expect(criteria).to receive(:where).with( '$or' => [
+            it "specifies a 'and' clause with a cursor" do
+              expect(criteria).to receive(:and).with( '$or' => [
                 { name: { '$gt' => name } },
                 { name: { '$eq' => name }, id: { '$gt' => id } }
               ])
@@ -124,8 +124,8 @@ module Cursory
                 allow(results).to receive(:[]).with(9).and_return(result)
               end
 
-              it "specifies a 'where' clause with a cursor" do
-                expect(criteria).to receive(:where).with( '$or' => [
+              it "specifies a 'and' clause with a cursor" do
+                expect(criteria).to receive(:and).with( '$or' => [
                   { name: { '$gt' => name } },
                   { name: { '$eq' => name }, age: { '$lt' => age } },
                   { name: { '$eq' => name }, age: { '$eq' => age }, created_at: { '$lt' => created_at } },
