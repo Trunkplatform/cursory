@@ -1,5 +1,6 @@
 require 'json'
 require 'base64'
+require 'cursory/exceptions'
 
 module Cursory
   class Base
@@ -153,6 +154,4 @@ module Cursory
       (parsed_cursor || {}).merge(overrides)
     end
   end
-
-  class InvalidCursorError < StandardError; end
 end
